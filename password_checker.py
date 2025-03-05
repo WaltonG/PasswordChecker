@@ -1,4 +1,6 @@
 import requests
+import hashlib
+
 
 def request_api_data(query_char):
   url = 'https://api.pwnedpasswords.com/range/' + query_char
@@ -8,7 +10,10 @@ def request_api_data(query_char):
   return res
 
 def pwned_api_check(password):
-    # Check password if it exists in API response
-    pass
+  sha1password = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
+  first5_char, tail = sha1password[:5], sha1password[5:]
+  response = request_api_data(first5_char)
+  print(first5_char, tail)
+  print(response)
 
-request_api_data('40BD0')
+pwned_api_check('test')
